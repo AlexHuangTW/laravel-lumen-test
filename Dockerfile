@@ -1,5 +1,5 @@
 # Use an official PHP runtime as a parent image
-FROM php:8.3-fpm
+FROM php:8.3-cli
 
 # Set the working directory
 WORKDIR /var/www
@@ -33,12 +33,8 @@ COPY --chown=www-data:www-data . /var/www
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-# Update PHP-FPM to listen on port provided by Railway
-RUN echo "env[PORT] = \$PORT" >> /usr/local/etc/php-fpm.d/www.conf
-RUN sed -i 's/listen = 9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf
-
-# Expose the port that PHP-FPM is listening on
+# Expose the port that PHP's built-in server will listen on
 EXPOSE 8080
 
-# Start PHP-FPM
-CMD ["php-fpm"]
+# Start PHP's built-in server
+CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
