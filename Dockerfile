@@ -11,14 +11,10 @@ RUN apt-get update && apt-get install -y \
     libfreetype6-dev \
     locales \
     zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
     unzip \
     git \
-    curl
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
