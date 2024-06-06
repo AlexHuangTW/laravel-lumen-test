@@ -24,7 +24,6 @@ $app = new Laravel\Lumen\Application(
 );
 
 $app->withFacades();
-
 $app->withEloquent();
 
 /*
@@ -60,6 +59,7 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('cors'); // 确保加载 cors 配置文件
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +79,10 @@ $app->configure('app');
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
+
+$app->middleware([
+    Fruitcake\Cors\HandleCors::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
