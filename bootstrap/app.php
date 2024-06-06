@@ -30,6 +30,7 @@ $app->configure('cors'); // 确保加载 cors 配置文件
 
 $app->middleware([
     Fruitcake\Cors\HandleCors::class, // 注册 CORS 中间件
+    App\Http\Middleware\ExampleMiddleware::class, // 注册 ExampleMiddleware
 ]);
 
 $app->router->group([
