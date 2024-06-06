@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -29,6 +30,14 @@ COPY . /var/www
 # Copy existing application directory permissions
 COPY --chown=www-data:www-data . /var/www
 
-# Expose port 9000 and start php-fpm server
+# Install PHP dependencies
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+
+# Expose port 9000 (common for PHP-FPM)
 EXPOSE 9000
+
+# Update PHP-FPM to listen on port provided by Railway
+RUN echo "env[PORT] = \$PORT" >> /usr/local/etc/php-fpm.d/www.conf
+RUN sed -i 's/listen = 9000/listen = 0.0.0.0:$PORT/' /usr/local/etc/php-fpm.d/www.conf
+
 CMD ["php-fpm"]
