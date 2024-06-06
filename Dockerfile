@@ -34,10 +34,7 @@ COPY --chown=www-data:www-data . /var/www
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Expose the port that PHP's built-in server will listen on
-EXPOSE 8080
-
-# Set environment variable for Railway
-ENV PORT 8080
+EXPOSE ${PORT}
 
 # Start PHP's built-in server
-CMD php -S 0.0.0.0:$PORT -t public
+CMD php -S 0.0.0.0:${PORT} -t public
