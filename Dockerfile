@@ -37,4 +37,4 @@ RUN composer install --no-interaction --optimize-autoloader --no-dev
 EXPOSE 8080
 
 # Start PHP's built-in server
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
+CMD ["php", "-S", "0.0.0.0:$PORT", "-t", "public"]
