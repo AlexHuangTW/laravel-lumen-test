@@ -45,4 +45,4 @@ RUN echo "env[PORT] = \$PORT" >> /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i 's/listen = 9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf
 
 # Start PHP-FPM and Nginx
-CMD service nginx start && php-fpm
+CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
