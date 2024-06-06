@@ -35,7 +35,7 @@ COPY --chown=www-data:www-data . /var/www
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Copy Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Expose the port that Nginx is listening on
 EXPOSE 8080
