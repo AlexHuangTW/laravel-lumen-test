@@ -35,14 +35,14 @@ COPY --chown=www-data:www-data . /var/www
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Copy Nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Expose the port that Nginx is listening on
 EXPOSE 8080
 
-# Update PHP-FPM to listen on port provided by Railway
-RUN echo "env[PORT] = \$PORT" >> /usr/local/etc/php-fpm.d/www.conf
+# Update PHP-FPM to listen on port 8080
 RUN sed -i 's/listen = 9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf
 
 # Start PHP-FPM and Nginx
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+CMD service nginx start && php-fpm
