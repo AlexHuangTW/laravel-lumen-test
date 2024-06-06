@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libonig-dev \
-    nginx \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
@@ -34,16 +33,12 @@ COPY --chown=www-data:www-data . /var/www
 # Install PHP dependencies
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-# Copy Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/default.conf
-
-# Expose the port that Nginx is listening on
-EXPOSE 8080
-
 # Update PHP-FPM to listen on port provided by Railway
 RUN echo "env[PORT] = \$PORT" >> /usr/local/etc/php-fpm.d/www.conf
 RUN sed -i 's/listen = 9000/listen = 0.0.0.0:9000/' /usr/local/etc/php-fpm.d/www.conf
 
-# Start PHP-FPM and Nginx
-CMD service nginx start && php-fpm
+# Expose the port that PHP-FPM is listening on
+EXPOSE 8080
+
+# Start PHP-FPM
+CMD ["php-fpm"]
