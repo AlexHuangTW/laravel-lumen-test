@@ -1,3 +1,5 @@
+<?php
+
 return [
     'paths' => ['api/*', 'events', '*'],
     'allowed_methods' => ['*'],
