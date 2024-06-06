@@ -59,7 +59,7 @@ $app->singleton(
 */
 
 $app->configure('app');
-$app->configure('cors'); // 确保加载 cors 配置文件
+$app->configure('cors');
 
 /*
 |--------------------------------------------------------------------------
